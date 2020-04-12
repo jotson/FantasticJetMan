@@ -12,16 +12,13 @@ export (int) var air_acceleration = 15;
 var velocity = Vector2.ZERO
 # animation
 onready var anim = get_node("AnimationPlayer")
-onready var anim_tree = $AnimationTree
-onready var animState = anim_tree.get("parameters/playback")
+onready var playerSprite = get_node("Sprite");
 # animation state
 onready var current_anim;
 onready var next_anim;
 
-onready var jump_pad = $"../JumpPad"
-
 # States
-onready var STATES = ['jump', 'airborne', 'throwing', 'idle', 'running'];
+onready var STATES = ['jump', 'airborne', 'throwing', 'idle', 'running', 'bounce'];
 
 onready var next_state = 'idle';
 onready var current_state = 'idle'; # just to set it to something;
@@ -35,12 +32,37 @@ onready var bounce_in_queue = false;
 signal start_throwing;
 signal confirm_throw;
 
-func _ready():
-	# Set up signals from JumpPad
-	jump_pad.connect("throw_confirmed", self, "_on_JumpPad_throw_confirmed");
+### JUMP PAD
+
+export (int) var placementSpeed = 5;
+onready var jump_pad_scene = $"../JumpPadScene"
+onready var jump_pad = jump_pad_scene.get_node("JumpPad")
+onready var jump_pad_indicator = jump_pad_scene.get_node("JumpPadIndicator")
+
+func move_jump_pad():
+	if jump_pad_indicator:
+		if Input.is_action_pressed("ui_right"):
+			jump_pad_indicator.position.x += placementSpeed
+		if Input.is_action_pressed("ui_left"):
+			jump_pad_indicator.position.x -= placementSpeed
+		if Input.is_action_pressed("ui_up"):
+			jump_pad_indicator.position.y -= placementSpeed
+		if Input.is_action_pressed("ui_down"):
+			jump_pad_indicator.position.y += placementSpeed
+
+func show_indicator():
+	jump_pad_indicator.show()
+	jump_pad.hide()
+
+func swap_indicator_for_pad():
+	if jump_pad_indicator.is_visible():
+		jump_pad_indicator.hide()
+		jump_pad.position = jump_pad_indicator.position
+		jump_pad.show()
+### 
+
 
 func get_input():
-
 	# Throw state
 	if Input.is_action_just_pressed("throw_state"):
 		next_state = 'throwing'
@@ -70,20 +92,21 @@ func _physics_process(delta):
 			start_idle_state(delta);
 		'running':
 			start_running_state(delta);
+		'bounce':
+			start_bounce_state(delta);
+		'game_over':
+			start_game_over_state(delta);
 
-		
-func _process(_delta):
-	debug_exit_game()
 
-func _on_JumpPad_throw_confirmed():
-	is_throwing = false;
+func queue_bounce_state():
+	if next_state != 'bounce' and current_state != 'bounce':
+		next_state = 'bounce';
 
-func bounce():
-	bounce_in_queue = true;
-
-func debug_exit_game():
-	if Input.is_action_pressed("quit"):
-		get_tree().quit();
+func start_bounce_state(delta):
+	current_state = 'bounce'
+	velocity.y = jump_speed;
+	next_state = 'airborne';
+	
 
 func start_idle_state(_delta):
 	next_anim = 'idle';
@@ -99,9 +122,14 @@ func start_idle_state(_delta):
 func start_running_state(delta):
 	next_anim = 'running';
 	current_state = 'running';
+	if !is_on_floor():
+		next_state = 'airborne';
+		return;
 	if Input.is_action_pressed("ui_right"):
+		playerSprite.flip_h = false;
 		velocity.x = lerp( velocity.x, max_ground_speed, ground_acceleration * delta )
 	if Input.is_action_pressed("ui_left"):
+		playerSprite.flip_h = true;
 		velocity.x = lerp( velocity.x, -max_ground_speed, ground_acceleration * delta )
 	if Input.is_action_just_pressed("jump"):
 		next_state = 'jump'
@@ -112,6 +140,7 @@ func start_running_state(delta):
 		
 	pass
 func start_airborne_state(delta):
+	next_anim = 'airborne'
 	current_state = 'airborne'
 	if Input.is_action_pressed("ui_right"):
 		velocity.x = lerp( velocity.x, max_ground_speed, ground_acceleration * delta )
@@ -127,7 +156,15 @@ func start_throwing_state(_delta):
 	if current_state != 'throwing':
 		previous_state = current_state;
 	current_state = 'throwing'
-	if Input.is_action_just_pressed("throw_state") or Input.is_action_just_pressed("confirm_throw"):
+	show_indicator()
+	move_jump_pad();
+	if is_on_floor():
+		next_anim = 'idle';
+	if Input.is_action_just_pressed("throw_state"):
+		swap_indicator_for_pad();
+		next_state = previous_state;
+	if Input.is_action_just_pressed("confirm_throw"):
+		swap_indicator_for_pad();
 		next_state = previous_state;
 	pass
 	
@@ -137,5 +174,17 @@ func start_jump_state(delta):
 		velocity.y = jump_speed;
 		next_state = 'airborne';
 	pass
-	
 
+func start_game_over_state(delta):
+	current_state = 'game_over'
+	print('I died! I am in game over state!')
+
+func _process(_delta):
+	debug_exit_game()
+
+func debug_exit_game():
+	if Input.is_action_pressed("quit"):
+		get_tree().quit();
+
+func get_hurt():
+	next_state = 'game_over';

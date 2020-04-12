@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/Obstacle.gd" type="Script" id=1]
+
+[node name="Obstacle" type="Node2D"]
+position = Vector2( 200, 0 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="."]
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
