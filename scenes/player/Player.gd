@@ -177,6 +177,7 @@ func start_jump_state(delta):
 
 func start_game_over_state(delta):
 	current_state = 'game_over'
+	next_anim = 'death'
 	print('I died! I am in game over state!')
 
 func _process(_delta):
