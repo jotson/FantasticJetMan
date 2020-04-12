@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/parallax/3.png" type="Texture" id=1]
 [ext_resource path="res://assets/charater/placeholderPlayerSpritesheet.png" type="Texture" id=2]
 [ext_resource path="res://scenes/player/Player.gd" type="Script" id=3]
 [ext_resource path="res://assets/parallax/4.png" type="Texture" id=4]
 [ext_resource path="res://assets/parallax/2.png" type="Texture" id=5]
+[ext_resource path="res://assets/charater/treasure-Sheet.png" type="Texture" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 5.63614, 9.1318 )
@@ -151,3 +152,9 @@ anims/airborne = SubResource( 2 )
 anims/death = SubResource( 3 )
 anims/idle = SubResource( 4 )
 anims/running = SubResource( 5 )
+
+[node name="Treasure" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0, -16.3373 )
+texture = ExtResource( 6 )
+hframes = 6
