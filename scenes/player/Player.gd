@@ -23,7 +23,7 @@ export (Vector2) var treasure_throw_force = Vector2(0, 0);
 onready var treasureScene = preload("res://scenes/player/Treasure.tscn");
 
 # States
-onready var STATES = ['jump', 'airborne', 'throwing', 'idle', 'running', 'bounce', 'holding_treasure'];
+onready var STATES = ['jump', 'airborne', 'throwing', 'idle', 'running', 'bounce'];
 
 onready var next_state = 'idle';
 onready var current_state = 'idle'; # just to set it to something;
@@ -74,7 +74,8 @@ func get_input():
 
 func _physics_process(delta):
 	# throw treasure
-	throw_treasure()
+	print('velocity ', velocity.x)
+	throw_treasure(delta)
 	# move
 	velocity.x = lerp( velocity.x, 0, ground_deceleration * delta )
 	velocity.y += gravity * delta;
@@ -101,7 +102,7 @@ func _physics_process(delta):
 			start_game_over_state(delta);
 
 
-func queue_bounce_state():
+func bounce():
 	if next_state != 'bounce' and current_state != 'bounce':
 		next_state = 'bounce';
 
@@ -138,7 +139,7 @@ func start_running_state(delta):
 		next_state = 'jump'
 	if Input.is_action_just_pressed("throw_state"):
 			next_state = 'throwing'
-	if velocity.x == 0:
+	if abs(velocity.x) < 20:
 		next_state = 'idle';	
 		
 	pass
@@ -198,14 +199,17 @@ func pick_up_treasure():
 	is_carrying_treasure = true;
 	pass
 
-func throw_treasure():
+func throw_treasure(delta):
 	if Input.is_action_just_pressed("throw_treasure") and is_carrying_treasure:
 		var treasureInstance = treasureScene.instance()
 		treasureInstance.position = treasureSprite.position
 		add_child(treasureInstance)
 		var direction = 1;
+		var extra_force = 0;
 		if playerSprite.flip_h:
 			direction = -1;
-		treasureInstance.throw(direction)
+		if current_state != 'idle':
+			extra_force = 50;
+		treasureInstance.throw(direction, extra_force);
 		treasureSprite.hide()
 		is_carrying_treasure = false;

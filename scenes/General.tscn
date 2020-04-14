@@ -268,12 +268,6 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 59.956, -27.138 )
-jump_speed = -800
-max_ground_speed = 700
-ground_acceleration = 120
-
 [node name="JumpPadScene" parent="." instance=ExtResource( 3 )]
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -329,3 +323,7 @@ position = Vector2( 612.818, 587.833 )
 position = Vector2( 537.893, 587.833 )
 
 [node name="Treasure" parent="." instance=ExtResource( 8 )]
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 38.4614, -39.3831 )
+jump_speed = -800

@@ -94,7 +94,6 @@ script = ExtResource( 3 )
 __meta__ = {
 "_edit_group_": true
 }
-jump_speed = -500
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 2.802 )
