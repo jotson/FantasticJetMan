@@ -21,12 +21,14 @@ onready var treasureScene = preload("res://scenes/player/Treasure.tscn");
 
 # States
 onready var STATES = ['jump', 'airborne', 'throwing', 'idle', 'running', 'bounce'];
-
 onready var next_state = 'idle';
 onready var current_state = 'idle'; # just to set it to something;
 onready var previous_state;
 onready var is_carrying_treasure = false;
 
+### The Gun
+
+onready var gun = $"TheGun";
 ### JUMP PAD
 
 export (int) var placementSpeed = 5;
@@ -34,27 +36,9 @@ onready var jump_pad_scene = $"../JumpPadScene"
 onready var jump_pad = jump_pad_scene.get_node("JumpPad")
 onready var jump_pad_indicator = jump_pad_scene.get_node("JumpPadIndicator")
 
-func move_jump_pad():
-	if jump_pad_indicator:
-		if Input.is_action_pressed("ui_right"):
-			jump_pad_indicator.position.x += placementSpeed
-		if Input.is_action_pressed("ui_left"):
-			jump_pad_indicator.position.x -= placementSpeed
-		if Input.is_action_pressed("ui_up"):
-			jump_pad_indicator.position.y -= placementSpeed
-		if Input.is_action_pressed("ui_down"):
-			jump_pad_indicator.position.y += placementSpeed
+func _ready():
+	gun.hide()
 
-func show_indicator():
-	jump_pad_indicator.show()
-	jump_pad.hide()
-
-func swap_indicator_for_pad():
-	if jump_pad_indicator.is_visible():
-		jump_pad_indicator.hide()
-		jump_pad.position = jump_pad_indicator.position
-		jump_pad.show()
-### 
 
 func _physics_process(delta):
 	throw_treasure(delta)
@@ -138,19 +122,22 @@ func start_airborne_state(delta):
 		next_state = 'idle';
 
 func start_throwing_state(_delta):
+	gun.show()
 	# store previous state to know what we have to go back to doing
 	if current_state != 'throwing':
 		previous_state = current_state;
 	current_state = 'throwing'
-	show_indicator()
-	move_jump_pad();
+	jump_pad_scene.start_aiming();
+	
 	if is_on_floor():
 		next_anim = 'idle';
 	if Input.is_action_just_pressed("throw_state"):
-		swap_indicator_for_pad();
+		gun.hide()
+		jump_pad_scene.finish_aiming();
 		next_state = previous_state;
 	if Input.is_action_just_pressed("confirm_throw"):
-		swap_indicator_for_pad();
+		gun.hide();
+		jump_pad_scene.finish_aiming();
 		next_state = previous_state;
 	pass
 	

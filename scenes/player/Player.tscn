@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://assets/parallax/3.png" type="Texture" id=1]
 [ext_resource path="res://assets/charater/placeholderPlayerSpritesheet.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://assets/parallax/4.png" type="Texture" id=4]
 [ext_resource path="res://assets/parallax/2.png" type="Texture" id=5]
 [ext_resource path="res://assets/charater/treasure-Sheet.png" type="Texture" id=6]
+[ext_resource path="res://scenes/player/TheGun.tscn" type="PackedScene" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 5.63614, 9.1318 )
@@ -157,3 +158,6 @@ visible = false
 position = Vector2( 0, -16.3373 )
 texture = ExtResource( 6 )
 hframes = 6
+
+[node name="TheGun" parent="." instance=ExtResource( 7 )]
+position = Vector2( 11.7876, 3.04589 )
