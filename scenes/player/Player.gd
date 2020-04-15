@@ -1,13 +1,11 @@
 extends KinematicBody2D
 
 
-export (int) var jump_speed = -1800
-export (int) var gravity = 4000
+export (int) var jump_speed = -400
+export (int) var gravity = 1600
 export (int) var max_ground_speed = 800;
 export (int) var ground_acceleration = 100;
 export (int) var ground_deceleration = 50;
-export (int) var max_air_speed = 120;
-export (int) var air_acceleration = 15;
 
 var velocity = Vector2.ZERO
 # animation
@@ -19,7 +17,6 @@ onready var next_anim;
 
 # Treasure Assets
 onready var treasureSprite = get_node("Treasure")
-export (Vector2) var treasure_throw_force = Vector2(0, 0);
 onready var treasureScene = preload("res://scenes/player/Treasure.tscn");
 
 # States
@@ -28,9 +25,6 @@ onready var STATES = ['jump', 'airborne', 'throwing', 'idle', 'running', 'bounce
 onready var next_state = 'idle';
 onready var current_state = 'idle'; # just to set it to something;
 onready var previous_state;
-onready var is_jumping = false;
-onready var is_throwing = false;
-onready var bounce_in_queue = false;
 onready var is_carrying_treasure = false;
 
 ### JUMP PAD
@@ -62,19 +56,7 @@ func swap_indicator_for_pad():
 		jump_pad.show()
 ### 
 
-
-func get_input():
-	# Throw state
-	if Input.is_action_just_pressed("throw_state"):
-		next_state = 'throwing'
-		is_throwing = true;
-
-	if is_throwing and Input.is_action_just_pressed("confirm_throw"):
-		emit_signal("confirm_throw")
-
 func _physics_process(delta):
-	# throw treasure
-	print('velocity ', velocity.x)
 	throw_treasure(delta)
 	# move
 	velocity.x = lerp( velocity.x, 0, ground_deceleration * delta )
@@ -205,11 +187,8 @@ func throw_treasure(delta):
 		treasureInstance.position = treasureSprite.position
 		add_child(treasureInstance)
 		var direction = 1;
-		var extra_force = 0;
 		if playerSprite.flip_h:
 			direction = -1;
-		if current_state != 'idle':
-			extra_force = 50;
-		treasureInstance.throw(direction, extra_force);
+		treasureInstance.throw(direction);
 		treasureSprite.hide()
 		is_carrying_treasure = false;
