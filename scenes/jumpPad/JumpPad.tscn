@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://palceholderGreen.png" type="Texture" id=1]
-[ext_resource path="res://scenes/jumpPad/JumpPad.gd" type="Script" id=2]
+[ext_resource path="res://scenes/jumpPad/JumpPad.gd" type="Script" id=1]
+[ext_resource path="res://palceholderGreen.png" type="Texture" id=2]
 [ext_resource path="res://scenes/jumpPad/Area2D.gd" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -15,21 +15,21 @@ extents = Vector2( 10, 1.62469 )
 
 [node name="JumpPadScene" type="Node2D"]
 position = Vector2( 0, 0.255774 )
-script = ExtResource( 2 )
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="JumpPadIndicator" type="StaticBody2D" parent="."]
+[node name="TargetIndicator" type="StaticBody2D" parent="."]
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Sprite" type="Sprite" parent="JumpPadIndicator"]
+[node name="Sprite" type="Sprite" parent="TargetIndicator"]
 modulate = Color( 0.411765, 0.537255, 0.156863, 1 )
-texture = ExtResource( 1 )
+texture = ExtResource( 2 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="JumpPadIndicator"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TargetIndicator"]
 shape = SubResource( 1 )
 
 [node name="JumpPad" type="StaticBody2D" parent="."]
@@ -37,7 +37,7 @@ collision_layer = 5
 collision_mask = 5
 
 [node name="Sprite" type="Sprite" parent="JumpPad"]
-texture = ExtResource( 1 )
+texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="JumpPad"]
 shape = SubResource( 2 )

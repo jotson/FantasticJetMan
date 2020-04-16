@@ -2,7 +2,7 @@ extends Node2D
 
 # Bounce Player up!! when player enters Area2D
 
-onready var indicator = $"JumpPadIndicator"
+onready var indicator = $"TargetIndicator"
 onready var jump_pad = $"JumpPad"
 onready var is_aiming = false;
 export (int) var placementSpeed = 5;

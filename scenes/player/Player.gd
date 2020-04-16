@@ -20,7 +20,7 @@ onready var treasureSprite = get_node("Treasure")
 onready var treasureScene = preload("res://scenes/player/Treasure.tscn");
 
 # States
-onready var STATES = ['jump', 'airborne', 'throwing', 'idle', 'running', 'bounce'];
+onready var STATES = ['jump', 'airborne', 'shooting', 'idle', 'running', 'bounce'];
 onready var next_state = 'idle';
 onready var current_state = 'idle'; # just to set it to something;
 onready var previous_state;
@@ -33,8 +33,6 @@ onready var gun = $"TheGun";
 
 export (int) var placementSpeed = 5;
 onready var jump_pad_scene = $"../JumpPadScene"
-onready var jump_pad = jump_pad_scene.get_node("JumpPad")
-onready var jump_pad_indicator = jump_pad_scene.get_node("JumpPadIndicator")
 
 func _ready():
 	gun.hide()
@@ -56,8 +54,8 @@ func _physics_process(delta):
 			start_airborne_state(delta);
 		'jump':
 			start_jump_state(delta);
-		'throwing':
-			start_throwing_state(delta);
+		'shooting':
+			start_shooting_state(delta);
 		'idle':
 			start_idle_state(delta);
 		'running':
@@ -86,7 +84,7 @@ func start_idle_state(_delta):
 	if Input.is_action_just_pressed("jump"):
 		next_state = 'jump'
 	if Input.is_action_just_pressed("throw_state"):
-		next_state = 'throwing'
+		next_state = 'shooting'
 	pass
 
 func start_running_state(delta):
@@ -104,7 +102,7 @@ func start_running_state(delta):
 	if Input.is_action_just_pressed("jump"):
 		next_state = 'jump'
 	if Input.is_action_just_pressed("throw_state"):
-			next_state = 'throwing'
+			next_state = 'shooting'
 	if abs(velocity.x) < 20:
 		next_state = 'idle';	
 		
@@ -117,16 +115,16 @@ func start_airborne_state(delta):
 	if Input.is_action_pressed("ui_left"):
 		velocity.x = lerp( velocity.x, -max_ground_speed, ground_acceleration * delta )
 	if Input.is_action_just_pressed("throw_state"):
-		next_state = 'throwing'
+		next_state = 'shooting'
 	if is_on_floor():
 		next_state = 'idle';
 
-func start_throwing_state(_delta):
+func start_shooting_state(_delta):
 	gun.show()
 	# store previous state to know what we have to go back to doing
-	if current_state != 'throwing':
+	if current_state != 'shooting':
 		previous_state = current_state;
-	current_state = 'throwing'
+	current_state = 'shooting'
 	jump_pad_scene.start_aiming();
 	
 	if is_on_floor():
