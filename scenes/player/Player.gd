@@ -6,6 +6,7 @@ export (int) var gravity = 1600
 export (int) var max_ground_speed = 800;
 export (int) var ground_acceleration = 100;
 export (int) var ground_deceleration = 50;
+export (int) var air_deceleration = 200;
 
 var velocity = Vector2.ZERO
 # animation
@@ -29,19 +30,18 @@ onready var is_carrying_treasure = false;
 ### The Gun
 
 onready var gun = $"TheGun";
-### JUMP PAD
 
-export (int) var placementSpeed = 5;
+### Jump Pad
 onready var jump_pad_scene = $"../JumpPadScene"
 
 func _ready():
 	gun.hide()
 
-
 func _physics_process(delta):
 	throw_treasure(delta)
-	# move
+	# Move horizontally
 	velocity.x = lerp( velocity.x, 0, ground_deceleration * delta )
+	# Apply gravity
 	velocity.y += gravity * delta;
 	velocity = move_and_slide(velocity, Vector2.UP);
 	# animate
@@ -83,7 +83,7 @@ func start_idle_state(_delta):
 		next_state = 'running'
 	if Input.is_action_just_pressed("jump"):
 		next_state = 'jump'
-	if Input.is_action_just_pressed("throw_state"):
+	if Input.is_action_just_pressed("shooting_state"):
 		next_state = 'shooting'
 	pass
 
@@ -101,8 +101,8 @@ func start_running_state(delta):
 		velocity.x = lerp( velocity.x, -max_ground_speed, ground_acceleration * delta )
 	if Input.is_action_just_pressed("jump"):
 		next_state = 'jump'
-	if Input.is_action_just_pressed("throw_state"):
-			next_state = 'shooting'
+	if Input.is_action_just_pressed("shooting_state"):
+		next_state = 'shooting'
 	if abs(velocity.x) < 20:
 		next_state = 'idle';	
 		
@@ -110,11 +110,18 @@ func start_running_state(delta):
 func start_airborne_state(delta):
 	next_anim = 'airborne'
 	current_state = 'airborne'
-	if Input.is_action_pressed("ui_right"):
+	if velocity.x > 0:
 		velocity.x = lerp( velocity.x, max_ground_speed, ground_acceleration * delta )
-	if Input.is_action_pressed("ui_left"):
+	else:
 		velocity.x = lerp( velocity.x, -max_ground_speed, ground_acceleration * delta )
-	if Input.is_action_just_pressed("throw_state"):
+
+	if Input.is_action_pressed("ui_right"):
+		print('entered')
+		print('vel x ', velocity.x)
+		velocity.x += air_deceleration
+	if Input.is_action_pressed("ui_left"):
+		velocity.x -= air_deceleration
+	if Input.is_action_just_pressed("shooting_state"):
 		next_state = 'shooting'
 	if is_on_floor():
 		next_state = 'idle';
@@ -129,11 +136,11 @@ func start_shooting_state(_delta):
 	
 	if is_on_floor():
 		next_anim = 'idle';
-	if Input.is_action_just_pressed("throw_state"):
+	if Input.is_action_just_pressed("shooting_state"):
 		gun.hide()
 		jump_pad_scene.finish_aiming();
 		next_state = previous_state;
-	if Input.is_action_just_pressed("confirm_throw"):
+	if Input.is_action_just_pressed("shoot"):
 		gun.hide();
 		jump_pad_scene.finish_aiming();
 		next_state = previous_state;

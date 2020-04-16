@@ -278,6 +278,7 @@ position = Vector2( 612.818, 587.833 )
 position = Vector2( 537.893, 587.833 )
 
 [node name="Player" parent="." instance=ExtResource( 6 )]
-position = Vector2( 38.4614, -39.3831 )
+position = Vector2( 361.093, -147.625 )
+air_deceleration = 100
 
 [node name="Treasure" parent="." instance=ExtResource( 7 )]
