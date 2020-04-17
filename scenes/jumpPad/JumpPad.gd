@@ -9,9 +9,11 @@ onready var list_of_jump_pads = [];
 onready var max_number_of_jump_pads = 2;
 export (int) var placement_speed = 5;
 
-func start_aiming():
+func start_aiming(position):
+	print('called start aiming')
 	Engine.time_scale = 0.1
 	is_aiming = true;
+	indicator.global_position = position
 	indicator.show();
 	pass
 	
@@ -38,10 +40,10 @@ func _physics_process(delta):
 		if Input.is_action_pressed("ui_down"):
 			indicator.position.y += placement_speed
 
-func _on_Area2D_body_entered(body):
-	if body.has_method('bounce'):
-		body.queue_bounce_state()
-		pass
+#func _on_Area2D_body_entered(body):
+#	if body.has_method('bounce'):
+#		body.queue_bounce_state()
+#		pass
 
 func instantiate(preloadedScene):
 	var preloadedSceneInstance = preloadedScene.instance()

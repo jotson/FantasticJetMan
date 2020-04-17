@@ -161,3 +161,6 @@ hframes = 6
 
 [node name="TheGun" parent="." instance=ExtResource( 7 )]
 position = Vector2( 11.7876, 3.04589 )
+
+[node name="JumpPadDefaultPosition" type="Node2D" parent="."]
+position = Vector2( 27.3499, -0.157022 )

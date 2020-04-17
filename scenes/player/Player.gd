@@ -33,6 +33,7 @@ onready var gun = $"TheGun";
 
 ### Jump Pad
 onready var jump_pad_scene = $"../JumpPadScene"
+onready var jump_pad_default_position = $"JumpPadDefaultPosition"
 
 func _ready():
 	gun.hide()
@@ -131,8 +132,13 @@ func start_shooting_state(_delta):
 	# store previous state to know what we have to go back to doing
 	if current_state != 'shooting':
 		previous_state = current_state;
+		# Trigger jump aiming in jump_pad_scene
+		print(jump_pad_default_position.position)
+		print('global')
+		print(jump_pad_default_position.global_position)
+		jump_pad_scene.start_aiming(jump_pad_default_position.global_position);
 	current_state = 'shooting'
-	jump_pad_scene.start_aiming();
+	
 	
 	if is_on_floor():
 		next_anim = 'idle';
