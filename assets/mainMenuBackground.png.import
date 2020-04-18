@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/palceholderGreen.png-7804672f99e9a87f8f8d9de9e54232b9.stex"
+path="res://.import/mainMenuBackground.png-f57f57f7504bb6285540934a0c47349b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://palceholderGreen.png"
-dest_files=[ "res://.import/palceholderGreen.png-7804672f99e9a87f8f8d9de9e54232b9.stex" ]
+source_file="res://assets/mainMenuBackground.png"
+dest_files=[ "res://.import/mainMenuBackground.png-f57f57f7504bb6285540934a0c47349b.stex" ]
 
 [params]
 

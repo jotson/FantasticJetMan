@@ -14,6 +14,7 @@ __meta__ = {
 }
 
 [node name="TargetIndicator" type="StaticBody2D" parent="."]
+visible = false
 __meta__ = {
 "_edit_group_": true
 }

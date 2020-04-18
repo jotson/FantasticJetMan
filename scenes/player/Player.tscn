@@ -29,8 +29,8 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=3]
 resource_name = "death"
-length = 0.5
-step = 0.5
+length = 0.9
+step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("Camera2D:zoom")
 tracks/0/interp = 1
@@ -41,7 +41,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 0.1, 0.1 ) ]
+"values": [ Vector2( 1, 1 ), Vector2( 0.5, 0.5 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Camera2D:offset")
@@ -54,6 +54,20 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Vector2( 0, 0 ), Vector2( 0, -1 ) ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.9 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "show_game_over_screen"
+} ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -106,7 +120,6 @@ hframes = 9
 frame = 8
 
 [node name="Camera2D" type="Camera2D" parent="."]
-offset = Vector2( 0, -1 )
 current = true
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="Camera2D"]
@@ -164,3 +177,11 @@ position = Vector2( 11.7876, 3.04589 )
 
 [node name="JumpPadDefaultPosition" type="Node2D" parent="."]
 position = Vector2( 27.3499, -0.157022 )
+
+[node name="CollideRight" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( 6, 0 )
+
+[node name="CollideLeft" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( -6, 0 )

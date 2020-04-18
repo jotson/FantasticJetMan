@@ -2,12 +2,15 @@ extends Node2D
 
 # Bounce Player up!! when player enters Area2D
 
-onready var indicator = $"TargetIndicator";
+onready var indicator;
 onready var jump_pad = preload("res://scenes/JumpPad/IndividualJumpPad.tscn");
 onready var is_aiming = false;
 onready var list_of_jump_pads = [];
 onready var max_number_of_jump_pads = 2;
 export (int) var placement_speed = 5;
+
+func _ready():
+	indicator = $"TargetIndicator";
 
 func start_aiming(position):
 	print('called start aiming')
@@ -18,6 +21,7 @@ func start_aiming(position):
 	pass
 	
 func finish_aiming():
+	print('called finish aiming')
 	Engine.time_scale = 1
 	is_aiming = false;
 	indicator.hide();

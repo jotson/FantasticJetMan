@@ -1,0 +1,56 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/mainMenuBackground.png" type="Texture" id=1]
+[ext_resource path="res://assets/fonts/Montserrat-Regular.ttf" type="DynamicFontData" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 10
+font_data = ExtResource( 2 )
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_right = 360.0
+margin_bottom = 240.0
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 163.0
+margin_bottom = 37.0
+custom_fonts/font = SubResource( 1 )
+text = "How to play"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="."]
+margin_left = 16.0
+margin_top = 48.0
+margin_right = 376.0
+margin_bottom = 173.0
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 2 )
+text = "You need to make it to the end while carrying The Treasure. 
+Use Arrow Keys to move.
+Press A to Jump!
+Press S to start placing a Jump Pad to clear longer gaps or reach higher places. Press S again to place it. You can have 2 out at any given time.
+Press Up Arrow while in front of the door to exit the level. 
+If you see anything else in the level, it will probably hurt you."
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
