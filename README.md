@@ -12,4 +12,6 @@ If you see anything else in the level, it will probably hurt you.
 
 *actual product does not contain any Fantastic or any Jet
 
-A big thank to 0x72 on itch.io (https://0x72.itch.io/dungeontileset-ii) for Dungeon Tileset 2 which is where I got the character sprites from. Everything else is made by me.
+A big thanks to **0x72** on itch.io (https://0x72.itch.io/dungeontileset-ii) for Dungeon Tileset 2 which is where I got the character sprites from. Everything else is made by me.
+
+Also, big thanks to **securas** on GitHub (https://github.com/securas) for making your Godot games open source! I have learned a ton from you and taken inspiration from the way you handle state :)
